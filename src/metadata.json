@@ -1,0 +1,15 @@
+{
+    "KPlugin": {
+        "Id": "dndscroll",
+        "Name": "Scroll during drag-and-drop",
+        "Description": "Sends mouse wheel events to the window under the cursor while a drag-and-drop is in progress",
+        "Authors": [
+            {
+                "Name": "Bedz01"
+            }
+        ],
+        "License": "GPL-2.0-or-later",
+        "Website": "https://github.com/Bedz01/kwin-dnd-scroll",
+        "EnabledByDefault": true
+    }
+}
