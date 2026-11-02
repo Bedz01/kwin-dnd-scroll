@@ -46,6 +46,24 @@ qdbus6 org.kde.KWin /Plugins org.kde.KWin.Plugins.UnloadPlugin dndscroll   # off
 > **Rebuild after every KWin update.** A KWin plugin only loads into the exact KWin release it was built
 > against (the plugin interface id carries the version, e.g. `6.8.2`). After an update the old build is
 > silently skipped: nothing breaks, scrolling during drags just stops until you rebuild and reinstall.
+> On Arch, a pacman hook can do that for you (below).
+
+### Arch: rebuild automatically
+
+```sh
+sudo contrib/pacman-hook.sh install
+```
+
+This writes `/etc/pacman.d/hooks/kwin-dnd-scroll.hook`. After every pacman transaction that installs or
+upgrades `kwin`, it rebuilds the plugin from this clone and installs it, ready for the next KWin start.
+Keep the clone where it is: the hook builds from that path.
+
+- The hook runs a root-owned copy of the script, kept in `/usr/local/lib/kwin-dnd-scroll/`. The build runs
+  as the clone's owner, and only the finished `.so` is installed as root.
+- A failed rebuild doesn't fail the pacman transaction. It prints a warning and the plugin stays unloaded
+  until the next successful build.
+- `contrib/pacman-hook.sh run` as a normal user does a test build without installing anything.
+- `sudo contrib/pacman-hook.sh remove` removes the hook again.
 
 To stop it loading at startup, set `dndscrollEnabled=false` in the `[Plugins]` group of `kwinrc`, or delete
 `/usr/lib/qt6/plugins/kwin/plugins/dndscroll.so`.
